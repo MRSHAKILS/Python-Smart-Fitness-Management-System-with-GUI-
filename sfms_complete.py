@@ -29,7 +29,7 @@ class Member:
             "meals": self.meals,
             "goals": self.goals,
         }
-    
+
     def update(self, name, age, membership_type, fitness_goals):
         self.name = name
         self.age = age
@@ -47,7 +47,6 @@ class FitnessClass:
 class Transaction:
     # Placeholder for future extension, not used in GUI yet
     pass
-
 
 # Main Application Controller
 class SFMSApp(tk.Tk):
@@ -110,7 +109,7 @@ class SFMSApp(tk.Tk):
         except Exception as e:
             messagebox.showerror("Load Error", f"Failed to load members: {e}")
 
-            # Main Menu Screen
+# Main Menu Screen
 class MainMenu(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
@@ -129,8 +128,7 @@ class MainMenu(tk.Frame):
         for label, screen in buttons:
             ttk.Button(self, text=label, width=30, command=lambda s=screen: controller.show_frame(s)).pack(pady=12)
 
-
-            # User Management Screen
+# User Management Screen
 class UserManagementScreen(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
@@ -185,7 +183,7 @@ class UserManagementScreen(tk.Frame):
 
         self.refresh()
 
-         def refresh(self):
+    def refresh(self):
         self.populate_member_list()
         self.clear_form()
 
@@ -253,8 +251,8 @@ class UserManagementScreen(tk.Frame):
         except ValueError:
             messagebox.showerror("Input Error", "Age must be a positive integer.")
             return
-        
-         new_member = Member(name, age, membership_type, goals)
+
+        new_member = Member(name, age, membership_type, goals)
         self.controller.members.append(new_member)
         self.controller.save_members()
         self.refresh()
@@ -270,7 +268,7 @@ class UserManagementScreen(tk.Frame):
         membership_type = self.membership_var.get()
         goals = self.goals_entry.get().strip()
 
-         if not name or not age_text or not membership_type or not goals:
+        if not name or not age_text or not membership_type or not goals:
             messagebox.showerror("Input Error", "All fields are required!")
             return
 
@@ -287,7 +285,7 @@ class UserManagementScreen(tk.Frame):
         self.refresh()
         messagebox.showinfo("Success", f"Member '{name}' updated successfully!")
 
-        def delete_member(self):
+    def delete_member(self):
         if not self.selected_member:
             messagebox.showerror("Selection Error", "No member selected to delete.")
             return
@@ -298,7 +296,7 @@ class UserManagementScreen(tk.Frame):
             self.refresh()
             messagebox.showinfo("Deleted", "Member deleted successfully.")
 
-            # Workout Tracking Screen
+# Workout Tracking Screen
 class WorkoutTrackingScreen(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
@@ -351,7 +349,7 @@ class WorkoutTrackingScreen(tk.Frame):
 
         self.refresh()
 
-        def refresh(self):
+    def refresh(self):
         self.populate_member_list()
         self.clear_workout_form()
         self.selected_member = None
@@ -416,7 +414,7 @@ class WorkoutTrackingScreen(tk.Frame):
         calories = self.calories_entry.get().strip()
         notes = self.notes_entry.get().strip()
 
-         if not etype or not duration or not calories:
+        if not etype or not duration or not calories:
             messagebox.showerror("Input Error", "Exercise Type, Duration, and Calories are required.")
             return
         try:
@@ -454,7 +452,7 @@ class WorkoutTrackingScreen(tk.Frame):
         calories = self.calories_entry.get().strip()
         notes = self.notes_entry.get().strip()
 
-         if not etype or not duration or not calories:
+        if not etype or not duration or not calories:
             messagebox.showerror("Input Error", "Exercise Type, Duration, and Calories are required.")
             return
         try:
@@ -478,7 +476,7 @@ class WorkoutTrackingScreen(tk.Frame):
         messagebox.showinfo("Success", "Workout updated successfully.")
         self.clear_workout_form()
 
-         def delete_workout(self):
+    def delete_workout(self):
         if self.selected_workout_index is None:
             messagebox.showerror("No Workout Selected", "Please select a workout to delete.")
             return
@@ -493,7 +491,7 @@ class WorkoutTrackingScreen(tk.Frame):
             messagebox.showinfo("Deleted", "Workout deleted successfully.")
             self.clear_workout_form()
 
-            # Goal Tracking Screen
+# Goal Tracking Screen
 class GoalTrackingScreen(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
@@ -602,8 +600,8 @@ class GoalTrackingScreen(tk.Frame):
         if not goals:
             self.progress_label.config(text="No goals set yet.")
             return
-        
-                # Calculate progress
+
+        # Calculate progress
         total_calories = sum(w.get("calories_burned", 0) for w in workouts)
         total_distance = sum(w.get("distance", 0) for w in workouts)  # distance optional
         # Weight lifting progress not tracked directly here, show as N/A
@@ -622,7 +620,7 @@ class GoalTrackingScreen(tk.Frame):
         self.member_listbox.selection_clear(0, tk.END)
         self.selected_member = None
 
-        # Nutrition Tracking Screen
+# Nutrition Tracking Screen
 class NutritionTrackingScreen(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
@@ -829,7 +827,7 @@ class NutritionTrackingScreen(tk.Frame):
             messagebox.showinfo("Deleted", "Meal deleted successfully.")
             self.clear_meal_form()
 
-            # Reports & Analytics Screen
+# Reports & Analytics Screen
 class ReportsScreen(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
@@ -908,10 +906,12 @@ class ReportsScreen(tk.Frame):
 
         self.report_text.config(state="disabled")
 
+        
 # Main Application
 if __name__ == "__main__":
     app = SFMSApp()
     app.mainloop()
+
 
 
 

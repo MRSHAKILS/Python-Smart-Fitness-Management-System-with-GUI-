@@ -3,11 +3,20 @@
         "member_id": "eb478769",
         "name": "Jason",
         "age": 24,
-        "membership_type": "Basic",
+        "membership_type": "VIP",
         "fitness_goals": "Loose weight",
         "progress_data": [],
         "workouts": [],
-        "meals": [],
+        "meals": [
+            {
+                "meal_type": "Lunch",
+                "calories": 600.0,
+                "protein": 40.0,
+                "carbs": 0,
+                "fats": 0,
+                "date": "2025-05-21 13:20:28"
+            }
+        ],
         "goals": {}
     },
     {
@@ -20,5 +29,28 @@
         "workouts": [],
         "meals": [],
         "goals": {}
+    },
+    {
+        "member_id": "17170f2f",
+        "name": "John",
+        "age": 30,
+        "membership_type": "Premium",
+        "fitness_goals": "Cardio",
+        "progress_data": [],
+        "workouts": [
+            {
+                "exercise_type": "Running",
+                "duration": 30.0,
+                "calories_burned": 300.0,
+                "notes": "None",
+                "date": "2025-05-21 13:18:28"
+            }
+        ],
+        "meals": [],
+        "goals": {
+            "calories_to_burn": 2000.0,
+            "distance_to_run": 5.0,
+            "weight_to_lift": 40.0
+        }
     }
 ]
