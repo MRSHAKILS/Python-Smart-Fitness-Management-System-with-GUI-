@@ -270,5 +270,33 @@ class UserManagementScreen(tk.Frame):
         membership_type = self.membership_var.get()
         goals = self.goals_entry.get().strip()
 
+         if not name or not age_text or not membership_type or not goals:
+            messagebox.showerror("Input Error", "All fields are required!")
+            return
+
+        try:
+            age = int(age_text)
+            if age <= 0:
+                raise ValueError
+        except ValueError:
+            messagebox.showerror("Input Error", "Age must be a positive integer.")
+            return
+
+        self.selected_member.update(name, age, membership_type, goals)
+        self.controller.save_members()
+        self.refresh()
+        messagebox.showinfo("Success", f"Member '{name}' updated successfully!")
+
+        def delete_member(self):
+        if not self.selected_member:
+            messagebox.showerror("Selection Error", "No member selected to delete.")
+            return
+        confirm = messagebox.askyesno("Confirm Delete", f"Are you sure you want to delete member '{self.selected_member.name}'?")
+        if confirm:
+            self.controller.members.remove(self.selected_member)
+            self.controller.save_members()
+            self.refresh()
+            messagebox.showinfo("Deleted", "Member deleted successfully.")
+
 
 
