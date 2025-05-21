@@ -29,3 +29,9 @@ class Member:
             "meals": self.meals,
             "goals": self.goals,
         }
+    
+    def update(self, name, age, membership_type, fitness_goals):
+        self.name = name
+        self.age = age
+        self.membership_type = membership_type
+        self.fitness_goals = fitness_goals
