@@ -253,5 +253,22 @@ class UserManagementScreen(tk.Frame):
         except ValueError:
             messagebox.showerror("Input Error", "Age must be a positive integer.")
             return
+        
+         new_member = Member(name, age, membership_type, goals)
+        self.controller.members.append(new_member)
+        self.controller.save_members()
+        self.refresh()
+        messagebox.showinfo("Success", f"Member '{name}' created successfully!")
+
+    def update_member(self):
+        if not self.selected_member:
+            messagebox.showerror("Selection Error", "No member selected to update.")
+            return
+
+        name = self.name_entry.get().strip()
+        age_text = self.age_entry.get().strip()
+        membership_type = self.membership_var.get()
+        goals = self.goals_entry.get().strip()
+
 
 
