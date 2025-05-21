@@ -242,3 +242,16 @@ class UserManagementScreen(tk.Frame):
         membership_type = self.membership_var.get()
         goals = self.goals_entry.get().strip()
 
+        if not name or not age_text or not membership_type or not goals:
+            messagebox.showerror("Input Error", "All fields are required!")
+            return
+
+        try:
+            age = int(age_text)
+            if age <= 0:
+                raise ValueError
+        except ValueError:
+            messagebox.showerror("Input Error", "Age must be a positive integer.")
+            return
+
+
