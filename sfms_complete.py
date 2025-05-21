@@ -129,3 +129,59 @@ class MainMenu(tk.Frame):
         for label, screen in buttons:
             ttk.Button(self, text=label, width=30, command=lambda s=screen: controller.show_frame(s)).pack(pady=12)
 
+
+            # User Management Screen
+class UserManagementScreen(tk.Frame):
+    def __init__(self, parent, controller):
+        super().__init__(parent)
+        self.controller = controller
+        self.selected_member = None
+
+        # Layout
+        left_frame = ttk.Frame(self, padding=10)
+        left_frame.pack(side="left", fill="y")
+
+        ttk.Label(left_frame, text="Members", font=("Helvetica", 16)).pack(pady=5)
+
+        self.member_listbox = tk.Listbox(left_frame, height=25, width=35)
+        self.member_listbox.pack()
+        self.member_listbox.bind("<<ListboxSelect>>", self.on_member_select)
+
+        right_frame = ttk.Frame(self, padding=10)
+        right_frame.pack(side="right", fill="both", expand=True)
+
+        ttk.Label(right_frame, text="Member Details", font=("Helvetica", 16)).grid(row=0, column=0, columnspan=2, pady=10)
+
+        ttk.Label(right_frame, text="Name:").grid(row=1, column=0, sticky="e")
+        self.name_entry = ttk.Entry(right_frame, width=40)
+        self.name_entry.grid(row=1, column=1, pady=5)
+
+        ttk.Label(right_frame, text="Age:").grid(row=2, column=0, sticky="e")
+        self.age_entry = ttk.Entry(right_frame, width=40)
+        self.age_entry.grid(row=2, column=1, pady=5)
+
+        ttk.Label(right_frame, text="Membership Type:").grid(row=3, column=0, sticky="e")
+        self.membership_var = tk.StringVar()
+        self.membership_combo = ttk.Combobox(right_frame, textvariable=self.membership_var,
+                                             values=["Basic", "Premium", "VIP"], state="readonly")
+        self.membership_combo.grid(row=3, column=1, pady=5)
+
+        ttk.Label(right_frame, text="Fitness Goals:").grid(row=4, column=0, sticky="e")
+        self.goals_entry = ttk.Entry(right_frame, width=40)
+        self.goals_entry.grid(row=4, column=1, pady=5)
+
+        btn_frame = ttk.Frame(right_frame)
+        btn_frame.grid(row=5, column=0, columnspan=2, pady=20)
+
+        ttk.Button(btn_frame, text="Create New Member", command=self.create_member).grid(row=0, column=0, padx=5)
+        ttk.Button(btn_frame, text="Update Member", command=self.update_member).grid(row=0, column=1, padx=5)
+        ttk.Button(btn_frame, text="Delete Member", command=self.delete_member).grid(row=0, column=2, padx=5)
+        ttk.Button(btn_frame, text="Clear Form", command=self.clear_form).grid(row=0, column=3, padx=5)
+        ttk.Button(btn_frame, text="Back to Main Menu", command=lambda: controller.show_frame(MainMenu)).grid(row=0, column=4, padx=5)
+
+        ttk.Label(right_frame, text="Progress History", font=("Helvetica", 14)).grid(row=6, column=0, columnspan=2, pady=10)
+        self.progress_text = tk.Text(right_frame, height=10, width=70, state="disabled")
+        self.progress_text.grid(row=7, column=0, columnspan=2)
+
+        self.refresh()
+
