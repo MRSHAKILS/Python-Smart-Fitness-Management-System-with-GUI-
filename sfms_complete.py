@@ -16,3 +16,16 @@ class Member:
         self.workouts = []
         self.meals = []
         self.goals = {}
+
+    def to_dict(self):
+        return {
+            "member_id": self.member_id,
+            "name": self.name,
+            "age": self.age,
+            "membership_type": self.membership_type,
+            "fitness_goals": self.fitness_goals,
+            "progress_data": self.progress_data,
+            "workouts": self.workouts,
+            "meals": self.meals,
+            "goals": self.goals,
+        }
