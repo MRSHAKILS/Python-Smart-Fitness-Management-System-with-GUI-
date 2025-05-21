@@ -602,6 +602,27 @@ class GoalTrackingScreen(tk.Frame):
         if not goals:
             self.progress_label.config(text="No goals set yet.")
             return
+        
+                # Calculate progress
+        total_calories = sum(w.get("calories_burned", 0) for w in workouts)
+        total_distance = sum(w.get("distance", 0) for w in workouts)  # distance optional
+        # Weight lifting progress not tracked directly here, show as N/A
+
+        progress_text = f"Calories burned: {total_calories} / {goals.get('calories_to_burn', 0)}\n"
+        progress_text += f"Distance run: {total_distance} km / {goals.get('distance_to_run', 0)} km\n"
+        progress_text += f"Weight to lift goal: {goals.get('weight_to_lift', 'N/A')} kg\n"
+
+        self.progress_label.config(text=progress_text)
+
+    def clear_form(self):
+        self.calories_goal_entry.delete(0, tk.END)
+        self.distance_goal_entry.delete(0, tk.END)
+        self.weight_goal_entry.delete(0, tk.END)
+        self.progress_label.config(text="")
+        self.member_listbox.selection_clear(0, tk.END)
+        self.selected_member = None
+
+
 
 
 
