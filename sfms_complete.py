@@ -416,5 +416,43 @@ class WorkoutTrackingScreen(tk.Frame):
         calories = self.calories_entry.get().strip()
         notes = self.notes_entry.get().strip()
 
+         if not etype or not duration or not calories:
+            messagebox.showerror("Input Error", "Exercise Type, Duration, and Calories are required.")
+            return
+        try:
+            duration = float(duration)
+            calories = float(calories)
+            if duration <= 0 or calories <= 0:
+                raise ValueError
+        except ValueError:
+            messagebox.showerror("Input Error", "Duration and Calories must be positive numbers.")
+            return
+
+        workout = {
+            "exercise_type": etype,
+            "duration": duration,
+            "calories_burned": calories,
+            "notes": notes,
+            "date": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        }
+        self.selected_member.workouts.append(workout)
+        self.controller.save_members()
+        self.populate_workout_list()
+        messagebox.showinfo("Success", "Workout added successfully.")
+        self.clear_workout_form()
+
+    def update_workout(self):
+        if self.selected_workout_index is None:
+            messagebox.showerror("No Workout Selected", "Please select a workout to update.")
+            return
+        if not self.selected_member:
+            messagebox.showerror("No User Selected", "Please select a member first.")
+            return
+
+        etype = self.exercise_entry.get().strip()
+        duration = self.duration_entry.get().strip()
+        calories = self.calories_entry.get().strip()
+        notes = self.notes_entry.get().strip()
+
 
 
