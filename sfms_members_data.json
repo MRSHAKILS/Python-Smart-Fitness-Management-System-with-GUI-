@@ -1,0 +1,24 @@
+[
+    {
+        "member_id": "eb478769",
+        "name": "Jason",
+        "age": 24,
+        "membership_type": "Basic",
+        "fitness_goals": "Loose weight",
+        "progress_data": [],
+        "workouts": [],
+        "meals": [],
+        "goals": {}
+    },
+    {
+        "member_id": "e2344d85",
+        "name": "Jasons",
+        "age": 24,
+        "membership_type": "Basic",
+        "fitness_goals": "Loose weight",
+        "progress_data": [],
+        "workouts": [],
+        "meals": [],
+        "goals": {}
+    }
+]
