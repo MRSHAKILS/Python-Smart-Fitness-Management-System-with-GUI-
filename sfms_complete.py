@@ -298,5 +298,58 @@ class UserManagementScreen(tk.Frame):
             self.refresh()
             messagebox.showinfo("Deleted", "Member deleted successfully.")
 
+            # Workout Tracking Screen
+class WorkoutTrackingScreen(tk.Frame):
+    def __init__(self, parent, controller):
+        super().__init__(parent)
+        self.controller = controller
+        self.selected_member = None
+        self.selected_workout_index = None
+
+        left_frame = ttk.Frame(self, padding=10)
+        left_frame.pack(side="left", fill="y")
+
+        ttk.Label(left_frame, text="Members", font=("Helvetica", 16)).pack(pady=5)
+        self.member_listbox = tk.Listbox(left_frame, height=20, width=30)
+        self.member_listbox.pack()
+        self.member_listbox.bind("<<ListboxSelect>>", self.on_member_select)
+
+        ttk.Label(left_frame, text="Workouts", font=("Helvetica", 16)).pack(pady=10)
+        self.workout_listbox = tk.Listbox(left_frame, height=20, width=30)
+        self.workout_listbox.pack()
+        self.workout_listbox.bind("<<ListboxSelect>>", self.on_workout_select)
+
+        right_frame = ttk.Frame(self, padding=10)
+        right_frame.pack(side="right", fill="both", expand=True)
+
+        ttk.Label(right_frame, text="Log/Edit Workout", font=("Helvetica", 16)).grid(row=0, column=0, columnspan=2, pady=10)
+
+        ttk.Label(right_frame, text="Exercise Type:").grid(row=1, column=0, sticky="e")
+        self.exercise_entry = ttk.Entry(right_frame, width=40)
+        self.exercise_entry.grid(row=1, column=1, pady=5)
+
+        ttk.Label(right_frame, text="Duration (minutes):").grid(row=2, column=0, sticky="e")
+        self.duration_entry = ttk.Entry(right_frame, width=40)
+        self.duration_entry.grid(row=2, column=1, pady=5)
+
+        ttk.Label(right_frame, text="Calories Burned:").grid(row=3, column=0, sticky="e")
+        self.calories_entry = ttk.Entry(right_frame, width=40)
+        self.calories_entry.grid(row=3, column=1, pady=5)
+
+        ttk.Label(right_frame, text="Notes:").grid(row=4, column=0, sticky="e")
+        self.notes_entry = ttk.Entry(right_frame, width=40)
+        self.notes_entry.grid(row=4, column=1, pady=5)
+
+        btn_frame = ttk.Frame(right_frame)
+        btn_frame.grid(row=5, column=0, columnspan=2, pady=15)
+
+        ttk.Button(btn_frame, text="Add Workout", command=self.add_workout).grid(row=0, column=0, padx=5)
+        ttk.Button(btn_frame, text="Update Workout", command=self.update_workout).grid(row=0, column=1, padx=5)
+        ttk.Button(btn_frame, text="Delete Workout", command=self.delete_workout).grid(row=0, column=2, padx=5)
+        ttk.Button(btn_frame, text="Clear Form", command=self.clear_workout_form).grid(row=0, column=3, padx=5)
+        ttk.Button(btn_frame, text="Back to Main Menu", command=lambda: controller.show_frame(MainMenu)).grid(row=0, column=4, padx=5)
+
+        self.refresh()
+
 
 
