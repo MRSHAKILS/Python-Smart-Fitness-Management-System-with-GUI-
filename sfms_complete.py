@@ -622,6 +622,215 @@ class GoalTrackingScreen(tk.Frame):
         self.member_listbox.selection_clear(0, tk.END)
         self.selected_member = None
 
+        # Nutrition Tracking Screen
+class NutritionTrackingScreen(tk.Frame):
+    def __init__(self, parent, controller):
+        super().__init__(parent)
+        self.controller = controller
+        self.selected_member = None
+        self.selected_meal_index = None
+
+        left_frame = ttk.Frame(self, padding=10)
+        left_frame.pack(side="left", fill="y")
+
+        ttk.Label(left_frame, text="Members", font=("Helvetica", 16)).pack(pady=5)
+        self.member_listbox = tk.Listbox(left_frame, height=20, width=30)
+        self.member_listbox.pack()
+        self.member_listbox.bind("<<ListboxSelect>>", self.on_member_select)
+
+        ttk.Label(left_frame, text="Meals", font=("Helvetica", 16)).pack(pady=10)
+        self.meal_listbox = tk.Listbox(left_frame, height=20, width=30)
+        self.meal_listbox.pack()
+        self.meal_listbox.bind("<<ListboxSelect>>", self.on_meal_select)
+
+        right_frame = ttk.Frame(self, padding=10)
+        right_frame.pack(side="right", fill="both", expand=True)
+
+        ttk.Label(right_frame, text="Log/Edit Meal", font=("Helvetica", 16)).grid(row=0, column=0, columnspan=2, pady=10)
+
+        ttk.Label(right_frame, text="Meal Type:").grid(row=1, column=0, sticky="e")
+        self.meal_type_combo = ttk.Combobox(right_frame, values=["Breakfast", "Lunch", "Dinner", "Snack"], state="readonly")
+        self.meal_type_combo.grid(row=1, column=1, pady=5)
+
+        ttk.Label(right_frame, text="Calories:").grid(row=2, column=0, sticky="e")
+        self.calories_entry = ttk.Entry(right_frame, width=40)
+        self.calories_entry.grid(row=2, column=1, pady=5)
+
+        ttk.Label(right_frame, text="Proteins (g):").grid(row=3, column=0, sticky="e")
+        self.protein_entry = ttk.Entry(right_frame, width=40)
+        self.protein_entry.grid(row=3, column=1, pady=5)
+
+        ttk.Label(right_frame, text="Carbs (g):").grid(row=4, column=0, sticky="e")
+        self.carbs_entry = ttk.Entry(right_frame, width=40)
+        self.carbs_entry.grid(row=4, column=1, pady=5)
+
+        ttk.Label(right_frame, text="Fats (g):").grid(row=5, column=0, sticky="e")
+        self.fats_entry = ttk.Entry(right_frame, width=40)
+        self.fats_entry.grid(row=5, column=1, pady=5)
+
+        btn_frame = ttk.Frame(right_frame)
+        btn_frame.grid(row=6, column=0, columnspan=2, pady=15)
+
+        ttk.Button(btn_frame, text="Add Meal", command=self.add_meal).grid(row=0, column=0, padx=5)
+        ttk.Button(btn_frame, text="Update Meal", command=self.update_meal).grid(row=0, column=1, padx=5)
+        ttk.Button(btn_frame, text="Delete Meal", command=self.delete_meal).grid(row=0, column=2, padx=5)
+        ttk.Button(btn_frame, text="Clear Form", command=self.clear_meal_form).grid(row=0, column=3, padx=5)
+        ttk.Button(btn_frame, text="Back to Main Menu", command=lambda: controller.show_frame(MainMenu)).grid(row=0, column=4, padx=5)
+
+        self.refresh()
+
+    def refresh(self):
+        self.populate_member_list()
+        self.clear_meal_form()
+        self.selected_member = None
+        self.selected_meal_index = None
+
+    def populate_member_list(self):
+        self.member_listbox.delete(0, tk.END)
+        for m in self.controller.members:
+            self.member_listbox.insert(tk.END, f"{m.name} ({m.membership_type})")
+
+    def populate_meal_list(self):
+        self.meal_listbox.delete(0, tk.END)
+        if self.selected_member:
+            for i, meal in enumerate(self.selected_member.meals):
+                mtype = meal.get("meal_type", "N/A")
+                date = meal.get("date", "N/A")
+                self.meal_listbox.insert(tk.END, f"{i+1}. {mtype} on {date}")
+
+    def on_member_select(self, event):
+        if not self.member_listbox.curselection():
+            return
+        index = self.member_listbox.curselection()[0]
+        self.selected_member = self.controller.members[index]
+        self.populate_meal_list()
+        self.clear_meal_form()
+
+    def on_meal_select(self, event):
+        if not self.meal_listbox.curselection():
+            return
+        index = self.meal_listbox.curselection()[0]
+        self.selected_meal_index = index
+        meal = self.selected_member.meals[index]
+        self.load_meal_to_form(meal)
+
+    def load_meal_to_form(self, meal):
+        self.meal_type_combo.set(meal.get("meal_type", ""))
+        self.calories_entry.delete(0, tk.END)
+        self.calories_entry.insert(0, str(meal.get("calories", "")))
+        self.protein_entry.delete(0, tk.END)
+        self.protein_entry.insert(0, str(meal.get("protein", "")))
+        self.carbs_entry.delete(0, tk.END)
+        self.carbs_entry.insert(0, str(meal.get("carbs", "")))
+        self.fats_entry.delete(0, tk.END)
+        self.fats_entry.insert(0, str(meal.get("fats", "")))
+
+    def clear_meal_form(self):
+        self.selected_meal_index = None
+        self.meal_type_combo.set('')
+        self.calories_entry.delete(0, tk.END)
+        self.protein_entry.delete(0, tk.END)
+        self.carbs_entry.delete(0, tk.END)
+        self.fats_entry.delete(0, tk.END)
+        self.meal_listbox.selection_clear(0, tk.END)
+
+    def add_meal(self):
+        if not self.selected_member:
+            messagebox.showerror("No User Selected", "Please select a member first.")
+            return
+        mtype = self.meal_type_combo.get()
+        calories = self.calories_entry.get().strip()
+        protein = self.protein_entry.get().strip()
+        carbs = self.carbs_entry.get().strip()
+        fats = self.fats_entry.get().strip()
+
+        if not mtype or not calories:
+            messagebox.showerror("Input Error", "Meal Type and Calories are required.")
+            return
+
+        try:
+            calories_val = float(calories)
+            protein_val = float(protein) if protein else 0
+            carbs_val = float(carbs) if carbs else 0
+            fats_val = float(fats) if fats else 0
+            if calories_val < 0 or protein_val < 0 or carbs_val < 0 or fats_val < 0:
+                raise ValueError
+        except ValueError:
+            messagebox.showerror("Input Error", "Nutritional values must be non-negative numbers.")
+            return
+
+        meal = {
+            "meal_type": mtype,
+            "calories": calories_val,
+            "protein": protein_val,
+            "carbs": carbs_val,
+            "fats": fats_val,
+            "date": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        }
+        self.selected_member.meals.append(meal)
+        self.controller.save_members()
+        self.populate_meal_list()
+        messagebox.showinfo("Success", "Meal added successfully.")
+        self.clear_meal_form()
+
+    def update_meal(self):
+        if self.selected_meal_index is None:
+            messagebox.showerror("No Meal Selected", "Please select a meal to update.")
+            return
+        if not self.selected_member:
+            messagebox.showerror("No User Selected", "Please select a member first.")
+            return
+        mtype = self.meal_type_combo.get()
+        calories = self.calories_entry.get().strip()
+        protein = self.protein_entry.get().strip()
+        carbs = self.carbs_entry.get().strip()
+        fats = self.fats_entry.get().strip()
+
+        if not mtype or not calories:
+            messagebox.showerror("Input Error", "Meal Type and Calories are required.")
+            return
+
+        try:
+            calories_val = float(calories)
+            protein_val = float(protein) if protein else 0
+            carbs_val = float(carbs) if carbs else 0
+            fats_val = float(fats) if fats else 0
+            if calories_val < 0 or protein_val < 0 or carbs_val < 0 or fats_val < 0:
+                raise ValueError
+        except ValueError:
+            messagebox.showerror("Input Error", "Nutritional values must be non-negative numbers.")
+            return
+
+        meal = self.selected_member.meals[self.selected_meal_index]
+        meal["meal_type"] = mtype
+        meal["calories"] = calories_val
+        meal["protein"] = protein_val
+        meal["carbs"] = carbs_val
+        meal["fats"] = fats_val
+        meal["date"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+        self.controller.save_members()
+        self.populate_meal_list()
+        messagebox.showinfo("Success", "Meal updated successfully.")
+        self.clear_meal_form()
+
+    def delete_meal(self):
+        if self.selected_meal_index is None:
+            messagebox.showerror("No Meal Selected", "Please select a meal to delete.")
+            return
+        if not self.selected_member:
+            messagebox.showerror("No User Selected", "Please select a member first.")
+            return
+        confirm = messagebox.askyesno("Confirm Delete", "Are you sure you want to delete this meal?")
+        if confirm:
+            del self.selected_member.meals[self.selected_meal_index]
+            self.controller.save_members()
+            self.populate_meal_list()
+            messagebox.showinfo("Deleted", "Meal deleted successfully.")
+            self.clear_meal_form()
+
+
+
 
 
 
