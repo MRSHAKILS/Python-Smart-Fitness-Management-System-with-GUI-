@@ -493,5 +493,116 @@ class WorkoutTrackingScreen(tk.Frame):
             messagebox.showinfo("Deleted", "Workout deleted successfully.")
             self.clear_workout_form()
 
+            # Goal Tracking Screen
+class GoalTrackingScreen(tk.Frame):
+    def __init__(self, parent, controller):
+        super().__init__(parent)
+        self.controller = controller
+        self.selected_member = None
+
+        left_frame = ttk.Frame(self, padding=10)
+        left_frame.pack(side="left", fill="y")
+
+        ttk.Label(left_frame, text="Members", font=("Helvetica", 16)).pack(pady=5)
+        self.member_listbox = tk.Listbox(left_frame, height=30, width=30)
+        self.member_listbox.pack()
+        self.member_listbox.bind("<<ListboxSelect>>", self.on_member_select)
+
+        right_frame = ttk.Frame(self, padding=10)
+        right_frame.pack(side="right", fill="both", expand=True)
+
+        ttk.Label(right_frame, text="Set Fitness Goals", font=("Helvetica", 16)).grid(row=0, column=0, columnspan=2, pady=10)
+
+        ttk.Label(right_frame, text="Calories to Burn:").grid(row=1, column=0, sticky="e")
+        self.calories_goal_entry = ttk.Entry(right_frame, width=40)
+        self.calories_goal_entry.grid(row=1, column=1, pady=5)
+
+        ttk.Label(right_frame, text="Distance to Run (km):").grid(row=2, column=0, sticky="e")
+        self.distance_goal_entry = ttk.Entry(right_frame, width=40)
+        self.distance_goal_entry.grid(row=2, column=1, pady=5)
+
+        ttk.Label(right_frame, text="Weight to Lift (kg):").grid(row=3, column=0, sticky="e")
+        self.weight_goal_entry = ttk.Entry(right_frame, width=40)
+        self.weight_goal_entry.grid(row=3, column=1, pady=5)
+
+        btn_frame = ttk.Frame(right_frame)
+        btn_frame.grid(row=4, column=0, columnspan=2, pady=20)
+
+        ttk.Button(btn_frame, text="Set Goals", command=self.set_goals).grid(row=0, column=0, padx=5)
+        ttk.Button(btn_frame, text="View Progress", command=self.view_progress).grid(row=0, column=1, padx=5)
+        ttk.Button(btn_frame, text="Clear", command=self.clear_form).grid(row=0, column=2, padx=5)
+        ttk.Button(btn_frame, text="Back to Main Menu", command=lambda: controller.show_frame(MainMenu)).grid(row=0, column=3, padx=5)
+
+        self.progress_label = ttk.Label(right_frame, text="", font=("Helvetica", 14))
+        self.progress_label.grid(row=5, column=0, columnspan=2)
+
+        self.refresh()
+
+    def refresh(self):
+        self.populate_member_list()
+        self.clear_form()
+        self.selected_member = None
+
+    def populate_member_list(self):
+        self.member_listbox.delete(0, tk.END)
+        for m in self.controller.members:
+            self.member_listbox.insert(tk.END, f"{m.name} ({m.membership_type})")
+
+    def on_member_select(self, event):
+        if not self.member_listbox.curselection():
+            return
+        index = self.member_listbox.curselection()[0]
+        self.selected_member = self.controller.members[index]
+        self.load_goals()
+
+    def load_goals(self):
+        goals = self.selected_member.goals
+        self.calories_goal_entry.delete(0, tk.END)
+        self.distance_goal_entry.delete(0, tk.END)
+        self.weight_goal_entry.delete(0, tk.END)
+
+        self.calories_goal_entry.insert(0, goals.get("calories_to_burn", ""))
+        self.distance_goal_entry.insert(0, goals.get("distance_to_run", ""))
+        self.weight_goal_entry.insert(0, goals.get("weight_to_lift", ""))
+
+    def set_goals(self):
+        if not self.selected_member:
+            messagebox.showerror("No User Selected", "Please select a member first.")
+            return
+
+        calories = self.calories_goal_entry.get().strip()
+        distance = self.distance_goal_entry.get().strip()
+        weight = self.weight_goal_entry.get().strip()
+
+        try:
+            calories_val = float(calories) if calories else 0
+            distance_val = float(distance) if distance else 0
+            weight_val = float(weight) if weight else 0
+            if calories_val < 0 or distance_val < 0 or weight_val < 0:
+                raise ValueError
+        except ValueError:
+            messagebox.showerror("Input Error", "Goals must be non-negative numbers.")
+            return
+
+        self.selected_member.goals = {
+            "calories_to_burn": calories_val,
+            "distance_to_run": distance_val,
+            "weight_to_lift": weight_val,
+        }
+        self.controller.save_members()
+        messagebox.showinfo("Success", "Goals set successfully.")
+
+    def view_progress(self):
+        if not self.selected_member:
+            messagebox.showerror("No User Selected", "Please select a member first.")
+            return
+        goals = self.selected_member.goals
+        workouts = self.selected_member.workouts
+
+        if not goals:
+            self.progress_label.config(text="No goals set yet.")
+            return
+
+
 
 
