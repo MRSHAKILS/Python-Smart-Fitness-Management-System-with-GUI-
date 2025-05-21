@@ -829,6 +829,87 @@ class NutritionTrackingScreen(tk.Frame):
             messagebox.showinfo("Deleted", "Meal deleted successfully.")
             self.clear_meal_form()
 
+            # Reports & Analytics Screen
+class ReportsScreen(tk.Frame):
+    def __init__(self, parent, controller):
+        super().__init__(parent)
+        self.controller = controller
+        self.selected_member = None
+
+        left_frame = ttk.Frame(self, padding=10)
+        left_frame.pack(side="left", fill="y")
+
+        ttk.Label(left_frame, text="Members", font=("Helvetica", 16)).pack(pady=5)
+        self.member_listbox = tk.Listbox(left_frame, height=30, width=30)
+        self.member_listbox.pack()
+        self.member_listbox.bind("<<ListboxSelect>>", self.on_member_select)
+
+        right_frame = ttk.Frame(self, padding=10)
+        right_frame.pack(side="right", fill="both", expand=True)
+
+        ttk.Label(right_frame, text="Fitness Report", font=("Helvetica", 18)).pack(pady=10)
+
+        self.report_text = tk.Text(right_frame, height=30, width=80, state="disabled")
+        self.report_text.pack()
+
+        ttk.Button(right_frame, text="Back to Main Menu", command=lambda: controller.show_frame(MainMenu)).pack(pady=10)
+
+        self.refresh()
+
+    def refresh(self):
+        self.populate_member_list()
+        self.clear_report()
+        self.selected_member = None
+
+    def populate_member_list(self):
+        self.member_listbox.delete(0, tk.END)
+        for m in self.controller.members:
+            self.member_listbox.insert(tk.END, f"{m.name} ({m.membership_type})")
+
+    def on_member_select(self, event):
+        if not self.member_listbox.curselection():
+            return
+        index = self.member_listbox.curselection()[0]
+        self.selected_member = self.controller.members[index]
+        self.generate_report()
+
+    def clear_report(self):
+        self.report_text.config(state="normal")
+        self.report_text.delete("1.0", tk.END)
+        self.report_text.config(state="disabled")
+
+    def generate_report(self):
+        if not self.selected_member:
+            return
+        self.report_text.config(state="normal")
+        self.report_text.delete("1.0", tk.END)
+
+        m = self.selected_member
+
+        self.report_text.insert(tk.END, f"Member: {m.name}\n")
+        self.report_text.insert(tk.END, f"Membership Type: {m.membership_type}\n")
+        self.report_text.insert(tk.END, f"Fitness Goals: {m.fitness_goals}\n\n")
+
+        # Workouts summary
+        total_calories = sum(w.get("calories_burned", 0) for w in m.workouts)
+        self.report_text.insert(tk.END, f"Total Workouts Logged: {len(m.workouts)}\n")
+        self.report_text.insert(tk.END, f"Total Calories Burned: {total_calories:.2f}\n\n")
+
+        # Meals summary
+        total_meals = len(m.meals)
+        total_calories_meals = sum(meal.get("calories", 0) for meal in m.meals)
+        self.report_text.insert(tk.END, f"Total Meals Logged: {total_meals}\n")
+        self.report_text.insert(tk.END, f"Total Calories Consumed: {total_calories_meals:.2f}\n\n")
+
+        # Goals
+        self.report_text.insert(tk.END, "Goals:\n")
+        for k, v in m.goals.items():
+            self.report_text.insert(tk.END, f"  {k.replace('_', ' ').title()}: {v}\n")
+
+        self.report_text.config(state="disabled")
+
+
+
 
 
 
