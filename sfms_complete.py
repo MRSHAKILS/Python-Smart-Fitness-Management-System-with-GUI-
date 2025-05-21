@@ -351,5 +351,70 @@ class WorkoutTrackingScreen(tk.Frame):
 
         self.refresh()
 
+        def refresh(self):
+        self.populate_member_list()
+        self.clear_workout_form()
+        self.selected_member = None
+        self.selected_workout_index = None
+
+    def populate_member_list(self):
+        self.member_listbox.delete(0, tk.END)
+        for m in self.controller.members:
+            self.member_listbox.insert(tk.END, f"{m.name} ({m.membership_type})")
+
+    def populate_workout_list(self):
+        self.workout_listbox.delete(0, tk.END)
+        if self.selected_member:
+            for i, workout in enumerate(self.selected_member.workouts):
+                etype = workout.get("exercise_type", "N/A")
+                date = workout.get("date", "N/A")
+                self.workout_listbox.insert(tk.END, f"{i+1}. {etype} on {date}")
+
+    def on_member_select(self, event):
+        if not self.member_listbox.curselection():
+            return
+        index = self.member_listbox.curselection()[0]
+        self.selected_member = self.controller.members[index]
+        self.populate_workout_list()
+        self.clear_workout_form()
+
+    def on_workout_select(self, event):
+        if not self.workout_listbox.curselection():
+            return
+        index = self.workout_listbox.curselection()[0]
+        self.selected_workout_index = index
+        workout = self.selected_member.workouts[index]
+        self.load_workout_to_form(workout)
+
+    def load_workout_to_form(self, workout):
+        self.exercise_entry.delete(0, tk.END)
+        self.exercise_entry.insert(0, workout.get("exercise_type", ""))
+
+        self.duration_entry.delete(0, tk.END)
+        self.duration_entry.insert(0, str(workout.get("duration", "")))
+
+        self.calories_entry.delete(0, tk.END)
+        self.calories_entry.insert(0, str(workout.get("calories_burned", "")))
+
+        self.notes_entry.delete(0, tk.END)
+        self.notes_entry.insert(0, workout.get("notes", ""))
+
+    def clear_workout_form(self):
+        self.selected_workout_index = None
+        self.exercise_entry.delete(0, tk.END)
+        self.duration_entry.delete(0, tk.END)
+        self.calories_entry.delete(0, tk.END)
+        self.notes_entry.delete(0, tk.END)
+        self.workout_listbox.selection_clear(0, tk.END)
+
+    def add_workout(self):
+        if not self.selected_member:
+            messagebox.showerror("No User Selected", "Please select a member first.")
+            return
+        etype = self.exercise_entry.get().strip()
+        duration = self.duration_entry.get().strip()
+        calories = self.calories_entry.get().strip()
+        notes = self.notes_entry.get().strip()
+
 
 
