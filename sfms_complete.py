@@ -109,3 +109,23 @@ class SFMSApp(tk.Tk):
             pass
         except Exception as e:
             messagebox.showerror("Load Error", f"Failed to load members: {e}")
+
+            # Main Menu Screen
+class MainMenu(tk.Frame):
+    def __init__(self, parent, controller):
+        super().__init__(parent)
+        self.controller = controller
+
+        tk.Label(self, text="Smart Fitness Management System", font=("Helvetica", 24)).pack(pady=40)
+
+        buttons = [
+            ("User Management", UserManagementScreen),
+            ("Workout Tracking", WorkoutTrackingScreen),
+            ("Goal Tracking", GoalTrackingScreen),
+            ("Nutrition Tracking", NutritionTrackingScreen),
+            ("Reports & Analytics", ReportsScreen),
+        ]
+
+        for label, screen in buttons:
+            ttk.Button(self, text=label, width=30, command=lambda s=screen: controller.show_frame(s)).pack(pady=12)
+
