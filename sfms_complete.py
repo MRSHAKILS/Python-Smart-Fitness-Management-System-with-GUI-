@@ -185,3 +185,60 @@ class UserManagementScreen(tk.Frame):
 
         self.refresh()
 
+         def refresh(self):
+        self.populate_member_list()
+        self.clear_form()
+
+    def populate_member_list(self):
+        self.member_listbox.delete(0, tk.END)
+        for m in self.controller.members:
+            self.member_listbox.insert(tk.END, f"{m.name} ({m.membership_type})")
+
+    def on_member_select(self, event):
+        if not self.member_listbox.curselection():
+            return
+        index = self.member_listbox.curselection()[0]
+        self.selected_member = self.controller.members[index]
+        self.load_member_to_form(self.selected_member)
+
+    def load_member_to_form(self, member):
+        self.name_entry.delete(0, tk.END)
+        self.name_entry.insert(0, member.name)
+
+        self.age_entry.delete(0, tk.END)
+        self.age_entry.insert(0, str(member.age))
+
+        self.membership_var.set(member.membership_type)
+        self.goals_entry.delete(0, tk.END)
+        self.goals_entry.insert(0, member.fitness_goals)
+
+        self.progress_text.config(state="normal")
+        self.progress_text.delete("1.0", tk.END)
+        if member.progress_data:
+            for i, entry in enumerate(member.progress_data, 1):
+                self.progress_text.insert(tk.END, f"Entry {i} - Date: {entry.get('date', 'N/A')}\n")
+                for k, v in entry.items():
+                    if k != "date":
+                        self.progress_text.insert(tk.END, f"  {k}: {v}\n")
+                self.progress_text.insert(tk.END, "\n")
+        else:
+            self.progress_text.insert(tk.END, "No progress data recorded yet.\n")
+        self.progress_text.config(state="disabled")
+
+    def clear_form(self):
+        self.selected_member = None
+        self.name_entry.delete(0, tk.END)
+        self.age_entry.delete(0, tk.END)
+        self.membership_var.set('')
+        self.goals_entry.delete(0, tk.END)
+        self.progress_text.config(state="normal")
+        self.progress_text.delete("1.0", tk.END)
+        self.progress_text.config(state="disabled")
+        self.member_listbox.selection_clear(0, tk.END)
+
+    def create_member(self):
+        name = self.name_entry.get().strip()
+        age_text = self.age_entry.get().strip()
+        membership_type = self.membership_var.get()
+        goals = self.goals_entry.get().strip()
+
