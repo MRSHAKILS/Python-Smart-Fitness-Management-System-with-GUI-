@@ -478,5 +478,20 @@ class WorkoutTrackingScreen(tk.Frame):
         messagebox.showinfo("Success", "Workout updated successfully.")
         self.clear_workout_form()
 
+         def delete_workout(self):
+        if self.selected_workout_index is None:
+            messagebox.showerror("No Workout Selected", "Please select a workout to delete.")
+            return
+        if not self.selected_member:
+            messagebox.showerror("No User Selected", "Please select a member first.")
+            return
+        confirm = messagebox.askyesno("Confirm Delete", "Are you sure you want to delete this workout?")
+        if confirm:
+            del self.selected_member.workouts[self.selected_workout_index]
+            self.controller.save_members()
+            self.populate_workout_list()
+            messagebox.showinfo("Deleted", "Workout deleted successfully.")
+            self.clear_workout_form()
+
 
 
