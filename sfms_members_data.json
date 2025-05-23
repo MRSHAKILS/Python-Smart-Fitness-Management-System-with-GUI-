@@ -72,7 +72,6 @@
             "weight_to_lift": 40.0
         }
     },
-
     {
         "member_id": "a1b2c3d4",
         "name": "Alice",
@@ -116,7 +115,8 @@
         "goals": {
             "calories_to_burn": 1800.0,
             "distance_to_run": 4.0,
-            "weight_to_lift": 70.0
+            "weight_to_lift": 70.0,
+            "muscle_gain": 45.0
         }
     },
     {
