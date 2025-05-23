@@ -79,8 +79,16 @@
         "membership_type": "Premium",
         "fitness_goals": "Lose Weight",
         "progress_data": [
-            {"date": "2025-05-20", "weight": 80, "body_fat_percentage": 22},
-            {"date": "2025-05-21", "weight": 79.5, "body_fat_percentage": 21.8}
+            {
+                "date": "2025-05-20",
+                "weight": 80,
+                "body_fat_percentage": 22
+            },
+            {
+                "date": "2025-05-21",
+                "weight": 79.5,
+                "body_fat_percentage": 21.8
+            }
         ],
         "workouts": [
             {
@@ -129,8 +137,16 @@
         "membership_type": "Basic",
         "fitness_goals": "Gain Muscle",
         "progress_data": [
-            {"date": "2025-05-19", "weight": 65, "body_fat_percentage": 18},
-            {"date": "2025-05-20", "weight": 66, "body_fat_percentage": 17.8}
+            {
+                "date": "2025-05-19",
+                "weight": 65,
+                "body_fat_percentage": 18
+            },
+            {
+                "date": "2025-05-20",
+                "weight": 66,
+                "body_fat_percentage": 17.8
+            }
         ],
         "workouts": [
             {
@@ -179,8 +195,16 @@
         "membership_type": "VIP",
         "fitness_goals": "Improve Endurance",
         "progress_data": [
-            {"date": "2025-05-18", "weight": 90, "body_fat_percentage": 25},
-            {"date": "2025-05-19", "weight": 89.5, "body_fat_percentage": 24.5}
+            {
+                "date": "2025-05-18",
+                "weight": 90,
+                "body_fat_percentage": 25
+            },
+            {
+                "date": "2025-05-19",
+                "weight": 89.5,
+                "body_fat_percentage": 24.5
+            }
         ],
         "workouts": [
             {
@@ -229,8 +253,16 @@
         "membership_type": "VIP",
         "fitness_goals": "Lose Weight",
         "progress_data": [
-            {"date": "2025-05-19", "weight": 72, "body_fat_percentage": 25},
-            {"date": "2025-05-21", "weight": 70, "body_fat_percentage": 24.5}
+            {
+                "date": "2025-05-19",
+                "weight": 72,
+                "body_fat_percentage": 25
+            },
+            {
+                "date": "2025-05-21",
+                "weight": 70,
+                "body_fat_percentage": 24.5
+            }
         ],
         "workouts": [
             {
@@ -279,8 +311,16 @@
         "membership_type": "Premium",
         "fitness_goals": "Build Muscle",
         "progress_data": [
-            {"date": "2025-05-17", "weight": 85, "body_fat_percentage": 22},
-            {"date": "2025-05-19", "weight": 86, "body_fat_percentage": 21}
+            {
+                "date": "2025-05-17",
+                "weight": 85,
+                "body_fat_percentage": 22
+            },
+            {
+                "date": "2025-05-19",
+                "weight": 86,
+                "body_fat_percentage": 21
+            }
         ],
         "workouts": [
             {
@@ -329,8 +369,16 @@
         "membership_type": "Basic",
         "fitness_goals": "Improve Endurance",
         "progress_data": [
-            {"date": "2025-05-10", "weight": 100, "body_fat_percentage": 30},
-            {"date": "2025-05-15", "weight": 98, "body_fat_percentage": 29}
+            {
+                "date": "2025-05-10",
+                "weight": 100,
+                "body_fat_percentage": 30
+            },
+            {
+                "date": "2025-05-15",
+                "weight": 98,
+                "body_fat_percentage": 29
+            }
         ],
         "workouts": [
             {
@@ -379,8 +427,16 @@
         "membership_type": "VIP",
         "fitness_goals": "Cardio",
         "progress_data": [
-            {"date": "2025-05-15", "weight": 60, "body_fat_percentage": 18},
-            {"date": "2025-05-18", "weight": 59, "body_fat_percentage": 17.5}
+            {
+                "date": "2025-05-15",
+                "weight": 60,
+                "body_fat_percentage": 18
+            },
+            {
+                "date": "2025-05-18",
+                "weight": 59,
+                "body_fat_percentage": 17.5
+            }
         ],
         "workouts": [
             {
@@ -421,6 +477,16 @@
             "distance_to_run": 8,
             "weight_to_lift": 60
         }
+    },
+    {
+        "member_id": "40f54107",
+        "name": "John",
+        "age": 30,
+        "membership_type": "Premium",
+        "fitness_goals": "Cardio",
+        "progress_data": [],
+        "workouts": [],
+        "meals": [],
+        "goals": {}
     }
-
 ]
