@@ -109,6 +109,113 @@ class SFMSApp(tk.Tk):
         except Exception as e:
             messagebox.showerror("Load Error", f"Failed to load members: {e}")
 
+    # Generate Nutrition Report
+    def generate_nutrition_report(self, selected_member):
+        if not selected_member:
+            messagebox.showerror("No User Selected", "Please select a member first.")
+            return
+
+        # Generate nutrition report based on the selected member's meals
+        total_calories = sum(m.get("calories", 0) for m in selected_member.meals)
+        total_protein = sum(m.get("protein", 0) for m in selected_member.meals)
+        total_carbs = sum(m.get("carbs", 0) for m in selected_member.meals)
+        total_fats = sum(m.get("fats", 0) for m in selected_member.meals)
+
+        # Example of showing a nutrition summary:
+        nutrition_report = f"Nutrition Report for {selected_member.name}:\n"
+        nutrition_report += f"Total Calories: {total_calories}\n"
+        nutrition_report += f"Total Protein: {total_protein}\n"
+        nutrition_report += f"Total Carbs: {total_carbs}\n"
+        nutrition_report += f"Total Fats: {total_fats}\n"
+        
+        messagebox.showinfo("Nutrition Report", nutrition_report)
+
+        meals = selected_member.meals
+        if not meals:
+            selected_member.progress_label.config(text="No meals logged yet.")
+            return
+
+        total_calories = 0
+        total_protein = 0
+        total_carbs = 0
+        total_fats = 0
+
+        for meal in meals:
+            total_calories += meal.get("calories", 0)
+            total_protein += meal.get("protein", 0)
+            total_carbs += meal.get("carbs", 0)
+            total_fats += meal.get("fats", 0)
+
+        # Provide recommendations based on fitness goals
+        recommendations = ""
+        goals = selected_member.selected_member.goals
+
+        if goals.get("calories_to_burn", 0) > total_calories:
+            recommendations += "You have not yet reached your calorie burning goal. Increase activity or reduce calorie intake.\n"
+        if goals.get("weight_to_lift", 0) > 0 and total_protein < 100:  # Example: muscle gain recommendation
+            recommendations += "You might want to increase protein intake to support muscle gain.\n"
+
+        # Display the summary and recommendations
+        report_text = (
+            f"Total Calories Consumed: {total_calories}\n"
+            f"Total Protein Consumed: {total_protein}g\n"
+            f"Total Carbs Consumed: {total_carbs}g\n"
+            f"Total Fats Consumed: {total_fats}g\n\n"
+            f"Recommendations:\n{recommendations}"
+        )
+
+        selected_member.progress_label.config(text=report_text)
+
+    # Fitness Performance Analysis
+    def generate_fitness_performance(self, selected_member):
+        if not selected_member:
+            messagebox.showerror("No User Selected", "Please select a member first.")
+            return
+
+        progress_data = selected_member.progress_data
+        if not progress_data:
+            selected_member.progress_label.config(text="No progress data recorded yet.")
+            return
+
+        initial_weight = progress_data[0].get("weight", None)
+        initial_fat = progress_data[0].get("body_fat_percentage", None)
+
+        if initial_weight is None or initial_fat is None:
+            selected_member.progress_label.config(text="Incomplete progress data.")
+            return
+
+        weight_change = progress_data[-1].get("weight", initial_weight) - initial_weight
+        fat_change = progress_data[-1].get("body_fat_percentage", initial_fat) - initial_fat
+
+        performance_summary = f"Initial Weight: {initial_weight}kg, Final Weight: {progress_data[-1].get('weight', 'N/A')}kg\n"
+        performance_summary += f"Weight Change: {weight_change}kg\n"
+        performance_summary += f"Initial Body Fat: {initial_fat}%, Final Body Fat: {progress_data[-1].get('body_fat_percentage', 'N/A')}%\n"
+        performance_summary += f"Body Fat Change: {fat_change}%\n"
+
+        # Example of showing fitness performance
+        total_calories_burned = sum(w.get("calories_burned", 0) for w in selected_member.workouts)
+        weight_loss = 0  # Calculate weight loss if necessary based on member's progress data
+        if selected_member.progress_data:
+            initial_weight = selected_member.progress_data[0].get('weight', 0)
+            latest_weight = selected_member.progress_data[-1].get('weight', 0)
+            weight_loss = initial_weight - latest_weight
+
+        fitness_report = f"Fitness Performance for {selected_member.name}:\n"
+        fitness_report += f"Total Calories Burned: {total_calories_burned}\n"
+        fitness_report += f"Weight Loss: {weight_loss} kg\n"  # Add other metrics as necessary
+        
+        messagebox.showinfo("Fitness Performance", fitness_report)
+
+        # Provide analysis based on changes
+        if weight_change < 0:
+            performance_summary += "Great job on weight loss! Keep up the good work.\n"
+        elif weight_change > 0:
+            performance_summary += "You've gained weight, which may indicate muscle gain if paired with strength training.\n"
+        else:
+            performance_summary += "No significant weight change yet, consider reviewing your workout and nutrition plans.\n"
+
+        selected_member.progress_label.config(text=performance_summary)
+
 # Main Menu Screen
 class MainMenu(tk.Frame):
     def __init__(self, parent, controller):
@@ -827,7 +934,7 @@ class NutritionTrackingScreen(tk.Frame):
             messagebox.showinfo("Deleted", "Meal deleted successfully.")
             self.clear_meal_form()
 
-# Reports & Analytics Screen
+        # Reports & Analytics Screen
 class ReportsScreen(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
@@ -840,7 +947,7 @@ class ReportsScreen(tk.Frame):
         ttk.Label(left_frame, text="Members", font=("Helvetica", 16)).pack(pady=5)
         self.member_listbox = tk.Listbox(left_frame, height=30, width=30)
         self.member_listbox.pack()
-        self.member_listbox.bind("<<ListboxSelect>>", self.on_member_select)
+        self.member_listbox.bind("<<ListboxSelect>>", self.on_member_select)  # Binding to member selection
 
         right_frame = ttk.Frame(self, padding=10)
         right_frame.pack(side="right", fill="both", expand=True)
@@ -850,14 +957,18 @@ class ReportsScreen(tk.Frame):
         self.report_text = tk.Text(right_frame, height=30, width=80, state="disabled")
         self.report_text.pack()
 
+        ttk.Button(right_frame, text="Generate Nutrition Report", command=self.generate_nutrition_report).pack(pady=10)
+        ttk.Button(right_frame, text="Generate Fitness Performance Analysis", command=self.generate_fitness_performance).pack(pady=10)
+    
         ttk.Button(right_frame, text="Back to Main Menu", command=lambda: controller.show_frame(MainMenu)).pack(pady=10)
+
 
         self.refresh()
 
     def refresh(self):
         self.populate_member_list()
         self.clear_report()
-        self.selected_member = None
+        self.selected_member = None  # Reset on refresh
 
     def populate_member_list(self):
         self.member_listbox.delete(0, tk.END)
@@ -868,13 +979,27 @@ class ReportsScreen(tk.Frame):
         if not self.member_listbox.curselection():
             return
         index = self.member_listbox.curselection()[0]
-        self.selected_member = self.controller.members[index]
+        self.selected_member = self.controller.members[index]  # Set the selected member
         self.generate_report()
 
     def clear_report(self):
         self.report_text.config(state="normal")
         self.report_text.delete("1.0", tk.END)
         self.report_text.config(state="disabled")
+
+    def generate_nutrition_report(self):
+        if not self.selected_member:
+            messagebox.showerror("Error", "No member selected.")
+            return
+        
+        self.controller.generate_nutrition_report(self.selected_member)
+    
+    def generate_fitness_performance(self):
+        if not self.selected_member:
+            messagebox.showerror("Error", "No member selected.")
+            return
+        
+        self.controller.generate_fitness_performance(self.selected_member)
 
     def generate_report(self):
         if not self.selected_member:
@@ -905,6 +1030,7 @@ class ReportsScreen(tk.Frame):
             self.report_text.insert(tk.END, f"  {k.replace('_', ' ').title()}: {v}\n")
 
         self.report_text.config(state="disabled")
+        
 
         
 # Main Applicationa
