@@ -17,7 +17,11 @@
                 "date": "2025-05-21 13:20:28"
             }
         ],
-        "goals": {}
+        "goals": {
+            "calories_to_burn": 700.0,
+            "distance_to_run": 6.0,
+            "weight_to_lift": 78.0
+        }
     },
     {
         "member_id": "e2344d85",
@@ -26,7 +30,15 @@
         "membership_type": "Basic",
         "fitness_goals": "Loose weight",
         "progress_data": [],
-        "workouts": [],
+        "workouts": [
+            {
+                "exercise_type": "Pilate",
+                "duration": 60.0,
+                "calories_burned": 400.0,
+                "notes": "Use small brakes during session",
+                "date": "2025-05-23 16:19:07"
+            }
+        ],
         "meals": [],
         "goals": {}
     },
@@ -44,6 +56,13 @@
                 "calories_burned": 300.0,
                 "notes": "None",
                 "date": "2025-05-21 13:18:28"
+            },
+            {
+                "exercise_type": "Cardio",
+                "duration": 40.0,
+                "calories_burned": 200.0,
+                "notes": "Treadmil Bicycle",
+                "date": "2025-05-23 16:20:30"
             }
         ],
         "meals": [],
