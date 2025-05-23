@@ -1,237 +1,152 @@
 [
     {
-        "member_id": "eb478769",
-        "name": "Jason",
-        "age": 24,
-        "membership_type": "VIP",
-        "fitness_goals": "Loose weight",
-        "progress_data": [],
-        "workouts": [],
-        "meals": [
-            {
-                "meal_type": "Lunch",
-                "calories": 600.0,
-                "protein": 40.0,
-                "carbs": 0,
-                "fats": 0,
-                "date": "2025-05-21 13:20:28"
-            }
-        ],
-        "goals": {
-            "calories_to_burn": 700.0,
-            "distance_to_run": 6.0,
-            "weight_to_lift": 78.0
-        }
-    },
-    {
-        "member_id": "e2344d85",
-        "name": "Madison",
-        "age": 32,
-        "membership_type": "Basic",
-        "fitness_goals": "Loose weight",
-        "progress_data": [],
-        "workouts": [
-            {
-                "exercise_type": "Pilate",
-                "duration": 60.0,
-                "calories_burned": 400.0,
-                "notes": "Use small brakes during session",
-                "date": "2025-05-23 16:19:07"
-            }
-        ],
-        "meals": [],
-        "goals": {}
-    },
-    {
-        "member_id": "17170f2f",
-        "name": "John",
+        "member_id": "a1b2c3d4",
+        "name": "John Doe",
         "age": 30,
         "membership_type": "Premium",
-        "fitness_goals": "Cardio",
-        "progress_data": [],
+        "fitness_goals": "Lose Weight",
+        "progress_data": [
+            {"date": "2025-05-20", "weight": 80, "body_fat_percentage": 22},
+            {"date": "2025-05-21", "weight": 79.5, "body_fat_percentage": 21.8}
+        ],
         "workouts": [
             {
                 "exercise_type": "Running",
-                "duration": 30.0,
-                "calories_burned": 300.0,
-                "notes": "None",
-                "date": "2025-05-21 13:18:28"
+                "duration": 30,
+                "calories_burned": 300,
+                "notes": "Felt good, a bit tired towards the end.",
+                "date": "2025-05-20"
             },
             {
-                "exercise_type": "Cardio",
-                "duration": 40.0,
-                "calories_burned": 200.0,
-                "notes": "Treadmil Bicycle",
-                "date": "2025-05-23 16:20:30"
+                "exercise_type": "Cycling",
+                "duration": 45,
+                "calories_burned": 400,
+                "notes": "Great pace, steady throughout.",
+                "date": "2025-05-21"
             }
         ],
-        "meals": [],
-        "goals": {
-            "calories_to_burn": 2000.0,
-            "distance_to_run": 5.0,
-            "weight_to_lift": 40.0
-        }
-    },
-    {
-        "member_id": "a1b2c3d4",
-        "name": "Alice",
-        "age": 28,
-        "membership_type": "Basic",
-        "fitness_goals": "Build muscle",
-        "progress_data": [],
-        "workouts": [
+        "meals": [
             {
-                "exercise_type": "Weightlifting",
-                "duration": 45.0,
-                "calories_burned": 500.0,
-                "notes": "Focus on form",
-                "date": "2025-05-22 10:00:00"
-            }
-        ],
-        "meals": [],
-        "goals": {
-            "calories_to_burn": 1500.0,
-            "distance_to_run": 3.0,
-            "weight_to_lift": 60.0
-        }
-    },
-    {
-        "member_id": "d4e5f6g7",
-        "name": "Eve",
-        "age": 26,
-        "membership_type": "Premium",
-        "fitness_goals": "Increase strength",
-        "progress_data": [],
-        "workouts": [
+                "meal_type": "Breakfast",
+                "calories": 450,
+                "protein": 25,
+                "carbs": 55,
+                "fats": 12,
+                "date": "2025-05-20"
+            },
             {
-                "exercise_type": "Crossfit",
-                "duration": 50.0,
-                "calories_burned": 600.0,
-                "notes": "High intensity",
-                "date": "2025-05-22 09:00:00"
+                "meal_type": "Lunch",
+                "calories": 600,
+                "protein": 30,
+                "carbs": 70,
+                "fats": 15,
+                "date": "2025-05-20"
             }
         ],
-        "meals": [],
         "goals": {
-            "calories_to_burn": 1800.0,
-            "distance_to_run": 4.0,
-            "weight_to_lift": 70.0,
-            "muscle_gain": 45.0
-        }
-    },
-    {
-        "member_id": "h8i9j0k1",
-        "name": "David",
-        "age": 29,
-        "membership_type": "Basic",
-        "fitness_goals": "Improve endurance",
-        "progress_data": [],
-        "workouts": [
-            {
-                "exercise_type": "Swimming",
-                "duration": 30.0,
-                "calories_burned": 400.0,
-                "notes": "Focus on technique",
-                "date": "2025-05-22 08:00:00"
-            }
-        ],
-        "meals": [],
-        "goals": {
-            "calories_to_burn": 1600.0,
-            "distance_to_run": 7.0,
-            "weight_to_lift": 55.0
-        }
-    },
-    {
-        "member_id": "l2m3n4o5",
-        "name": "Grace",
-        "age": 27,
-        "membership_type": "VIP",
-        "fitness_goals": "Loose weight",
-        "progress_data": [],
-        "workouts": [
-            {
-                "exercise_type": "HIIT",
-                "duration": 40.0,
-                "calories_burned": 500.0,
-                "notes": "High intensity interval training",
-                "date": "2025-05-22 14:00:00"
-            }
-        ],
-        "meals": [],
-        "goals": {
-            "calories_to_burn": 2200.0,
-            "distance_to_run": 8.0,
-            "weight_to_lift": 65.0
-        }
-    },
-    {
-        "member_id": "p6q7r8s9",
-        "name": "Henry",
-        "age": 31,
-        "membership_type": "Basic",
-        "fitness_goals": "Increase flexibility",
-        "progress_data": [],
-        "workouts": [
-            {
-                "exercise_type": "Pilates",
-                "duration": 45.0,
-                "calories_burned": 350.0,
-                "notes": "Focus on core strength",
-                "date": "2025-05-22 15:00:00"
-            }
-        ],
-        "meals": [],
-        "goals": {
-            "calories_to_burn": 1400.0,
-            "distance_to_run": 3.5,
-            "weight_to_lift": 50.0
+            "calories_to_burn": 2000,
+            "distance_to_run": 10,
+            "weight_to_lift": 60
         }
     },
     {
         "member_id": "e5f6g7h8",
-        "name": "Bob",
-        "age": 35,
-        "membership_type": "VIP",
-        "fitness_goals": "Increase endurance",
-        "progress_data": [],
+        "name": "Jane Smith",
+        "age": 25,
+        "membership_type": "Basic",
+        "fitness_goals": "Gain Muscle",
+        "progress_data": [
+            {"date": "2025-05-19", "weight": 65, "body_fat_percentage": 18},
+            {"date": "2025-05-20", "weight": 66, "body_fat_percentage": 17.8}
+        ],
         "workouts": [
             {
-                "exercise_type": "Cycling",
-                "duration": 60.0,
-                "calories_burned": 700.0,
-                "notes": "Outdoor cycling",
-                "date": "2025-05-22 11:00:00"
+                "exercise_type": "Weightlifting",
+                "duration": 60,
+                "calories_burned": 500,
+                "notes": "Pushed hard on squats.",
+                "date": "2025-05-19"
+            },
+            {
+                "exercise_type": "Yoga",
+                "duration": 30,
+                "calories_burned": 150,
+                "notes": "Focused on flexibility.",
+                "date": "2025-05-20"
             }
         ],
-        "meals": [],
+        "meals": [
+            {
+                "meal_type": "Breakfast",
+                "calories": 500,
+                "protein": 35,
+                "carbs": 45,
+                "fats": 20,
+                "date": "2025-05-19"
+            },
+            {
+                "meal_type": "Dinner",
+                "calories": 700,
+                "protein": 40,
+                "carbs": 50,
+                "fats": 25,
+                "date": "2025-05-19"
+            }
+        ],
         "goals": {
-            "calories_to_burn": 2500.0,
-            "distance_to_run": 10.0,
-            "weight_to_lift": 80.0
+            "calories_to_burn": 1500,
+            "distance_to_run": 0,
+            "weight_to_lift": 80
         }
     },
     {
         "member_id": "i9j0k1l2",
-        "name": "Charlie",
-        "age": 22,
-        "membership_type": "Premium",
-        "fitness_goals": "Improve flexibility",
-        "progress_data": [],
+        "name": "Mike Brown",
+        "age": 40,
+        "membership_type": "VIP",
+        "fitness_goals": "Improve Endurance",
+        "progress_data": [
+            {"date": "2025-05-18", "weight": 90, "body_fat_percentage": 25},
+            {"date": "2025-05-19", "weight": 89.5, "body_fat_percentage": 24.5}
+        ],
         "workouts": [
             {
-                "exercise_type": "Yoga",
-                "duration": 30.0,
-                "calories_burned": 200.0,
-                "notes": "Focus on breathing",
-                "date": "2025-05-22 12:00:00"
+                "exercise_type": "Swimming",
+                "duration": 60,
+                "calories_burned": 600,
+                "notes": "Swam laps, felt strong.",
+                "date": "2025-05-19"
+            },
+            {
+                "exercise_type": "Running",
+                "duration": 45,
+                "calories_burned": 400,
+                "notes": "Ran at a steady pace.",
+                "date": "2025-05-20"
             }
         ],
-        "meals": [],
+        "meals": [
+            {
+                "meal_type": "Lunch",
+                "calories": 550,
+                "protein": 30,
+                "carbs": 60,
+                "fats": 18,
+                "date": "2025-05-19"
+            },
+            {
+                "meal_type": "Dinner",
+                "calories": 650,
+                "protein": 35,
+                "carbs": 70,
+                "fats": 20,
+                "date": "2025-05-19"
+            }
+        ],
         "goals": {
-            "calories_to_burn": 1200.0,
-            "distance_to_run": 2.0,
-            "weight_to_lift": 50.0
+            "calories_to_burn": 2500,
+            "distance_to_run": 15,
+            "weight_to_lift": 100
         }
     }
 ]
