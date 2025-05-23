@@ -907,7 +907,7 @@ class ReportsScreen(tk.Frame):
         self.report_text.config(state="disabled")
 
         
-# Main Application
+# Main Applicationa
 if __name__ == "__main__":
     app = SFMSApp()
     app.mainloop()
