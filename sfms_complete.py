@@ -121,52 +121,26 @@ class SFMSApp(tk.Tk):
         total_carbs = sum(m.get("carbs", 0) for m in selected_member.meals)
         total_fats = sum(m.get("fats", 0) for m in selected_member.meals)
 
-        # Example of showing a nutrition summary:
         nutrition_report = f"Nutrition Report for {selected_member.name}:\n"
         nutrition_report += f"Total Calories: {total_calories}\n"
         nutrition_report += f"Total Protein: {total_protein}\n"
         nutrition_report += f"Total Carbs: {total_carbs}\n"
         nutrition_report += f"Total Fats: {total_fats}\n"
-        
-        messagebox.showinfo("Nutrition Report", nutrition_report)
-
-        meals = selected_member.meals
-        if not meals:
-            selected_member.progress_label.config(text="No meals logged yet.")
-            return
-
-        total_calories = 0
-        total_protein = 0
-        total_carbs = 0
-        total_fats = 0
-
-        for meal in meals:
-            total_calories += meal.get("calories", 0)
-            total_protein += meal.get("protein", 0)
-            total_carbs += meal.get("carbs", 0)
-            total_fats += meal.get("fats", 0)
 
         # Provide recommendations based on fitness goals
         recommendations = ""
-        goals = selected_member.selected_member.goals
+        goals = selected_member.goals
 
         if goals.get("calories_to_burn", 0) > total_calories:
             recommendations += "You have not yet reached your calorie burning goal. Increase activity or reduce calorie intake.\n"
-        if goals.get("weight_to_lift", 0) > 0 and total_protein < 100:  # Example: muscle gain recommendation
+        if goals.get("weight_to_lift", 0) > 0 and total_protein < 100:
             recommendations += "You might want to increase protein intake to support muscle gain.\n"
 
-        # Display the summary and recommendations
-        report_text = (
-            f"Total Calories Consumed: {total_calories}\n"
-            f"Total Protein Consumed: {total_protein}g\n"
-            f"Total Carbs Consumed: {total_carbs}g\n"
-            f"Total Fats Consumed: {total_fats}g\n\n"
-            f"Recommendations:\n{recommendations}"
-        )
+        if recommendations:
+            nutrition_report += "\nRecommendations:\n" + recommendations
 
-        selected_member.progress_label.config(text=report_text)
+        messagebox.showinfo("Nutrition Report", nutrition_report)
 
-    # Fitness Performance Analysis
     def generate_fitness_performance(self, selected_member):
         if not selected_member:
             messagebox.showerror("No User Selected", "Please select a member first.")
@@ -174,14 +148,14 @@ class SFMSApp(tk.Tk):
 
         progress_data = selected_member.progress_data
         if not progress_data:
-            selected_member.progress_label.config(text="No progress data recorded yet.")
+            messagebox.showinfo("Fitness Performance", "No progress data recorded yet.")
             return
 
         initial_weight = progress_data[0].get("weight", None)
         initial_fat = progress_data[0].get("body_fat_percentage", None)
 
         if initial_weight is None or initial_fat is None:
-            selected_member.progress_label.config(text="Incomplete progress data.")
+            messagebox.showinfo("Fitness Performance", "Incomplete progress data.")
             return
 
         weight_change = progress_data[-1].get("weight", initial_weight) - initial_weight
@@ -192,9 +166,8 @@ class SFMSApp(tk.Tk):
         performance_summary += f"Initial Body Fat: {initial_fat}%, Final Body Fat: {progress_data[-1].get('body_fat_percentage', 'N/A')}%\n"
         performance_summary += f"Body Fat Change: {fat_change}%\n"
 
-        # Example of showing fitness performance
         total_calories_burned = sum(w.get("calories_burned", 0) for w in selected_member.workouts)
-        weight_loss = 0  # Calculate weight loss if necessary based on member's progress data
+        weight_loss = 0
         if selected_member.progress_data:
             initial_weight = selected_member.progress_data[0].get('weight', 0)
             latest_weight = selected_member.progress_data[-1].get('weight', 0)
@@ -202,11 +175,9 @@ class SFMSApp(tk.Tk):
 
         fitness_report = f"Fitness Performance for {selected_member.name}:\n"
         fitness_report += f"Total Calories Burned: {total_calories_burned}\n"
-        fitness_report += f"Weight Loss: {weight_loss} kg\n"  # Add other metrics as necessary
-        
-        messagebox.showinfo("Fitness Performance", fitness_report)
+        fitness_report += f"Weight Loss: {weight_loss} kg\n"
 
-        # Provide analysis based on changes
+        # Add analysis
         if weight_change < 0:
             performance_summary += "Great job on weight loss! Keep up the good work.\n"
         elif weight_change > 0:
@@ -214,7 +185,7 @@ class SFMSApp(tk.Tk):
         else:
             performance_summary += "No significant weight change yet, consider reviewing your workout and nutrition plans.\n"
 
-        selected_member.progress_label.config(text=performance_summary)
+        messagebox.showinfo("Fitness Performance", fitness_report + "\n" + performance_summary)
 
 # Main Menu Screen
 class MainMenu(tk.Frame):
